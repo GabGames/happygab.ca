@@ -3,60 +3,46 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        /* Masquer le bouton de volume */
-        #my-video::-webkit-media-controls-volume-slider,
-        #my-video::-webkit-media-controls-mute-button,
-        #my-video::-webkit-media-controls-volume-control {
-            display: none;
-        }
-
-        /* Styliser le sélecteur audio */
-        #audioSelector {
-            position: absolute;
-            bottom: -25px;
-            background-color: #fff;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-
-        /* Styliser le sélecteur vidéo */
-        #videoSelector {
-            position: absolute;
-            bottom: -25px;
-            left: 100px;
-            background-color: #fff;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <script src="https://www.youtube.com/iframe_api"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
 <body>
     <div id="player-container" style="position: relative;">
         <!-- Balise audio pour la piste audio -->
-        <audio id="audioPlayer" controls style="display: none;"></audio>
+        <audio id="audioPlayer" controls preload="auto" style="display: none;"></audio>
 
         <!-- Menu déroulant pour les pistes audio -->
-        <select id="audioSelector">
-            <option value="0" label="Par défaut" selected>Par défaut</option>
-            <option value="1" label="Français">Français</option>
-            <option value="2" label="English">English</option>
-            <option value="3" label="Japonais">Japonais</option>
+        <select id="audioSelector" class="selector" data-lang="audioSelector">
+            <option value="0">Par défaut</option>
+            <option value="1">Français</option>
+            <option value="2">English</option>
+            <option value="3">Japonais</option>
         </select>
 
         <!-- Menu déroulant pour les vidéos -->
-        <select id="videoSelector">
-            <option value="x1j758Oye58" label="Mon absence…" selected>Vidéo 1</option>
-            <option value="Nv5ouwXVRek" label="Quand j'ouvre un jeu sur mon ancien laptop...">Vidéo 2</option>
+        <select id="videoSelector" class="selector" data-lang="videoSelector">
+            <option value="x1j758Oye58"selected>Mon absence…</option>
+            <option value="Nv5ouwXVRek">Quand j'ouvre un jeu sur mon ancien laptop...</option>
+            <option value="W3St6H9JVF0">L'histoire de mon Google Home Mini (YTP)</option>
+            <option value="ysQ3v-QweOU">Vidéo Stop Motion de Noël</option>
+            <option value="sivRIKJnDzE">Vidéo supression de mon ancienne chaîne YouTube</option>
+            <option value="uKqrWDCpKhw">Vidéo Ouverture d'un Colis</option>
+            <option value="jEHebr1cKvI">Bande Annonce Chaîne 1</option>
+            <option value="kTb_l5TPNcc">Stop Motion - Les amis Épisode 2 - La Bataille des Mobs</option>
+            <option value="D5AlqQcNqp4">Stop Motion - Les amis Épisode 1 - Les Zombies de la Transformation</option>
             <!-- Ajoutez d'autres options pour différentes vidéos -->
         </select>
 
+        <!-- Menu déroulant pour la langue du site -->
+        <select id="siteLanguageSelector" class="selector">
+            <option value="en" label="English" selected>English</option>
+            <option value="fr" label="Français">Français</option>
+            <option value="es" label="Espagnol" selected>Espagnol</option>
+            <!-- Ajoutez d'autres options pour différentes langues -->
+        </select>
+        
         <div id="player"></div>
     </div>
 
@@ -66,21 +52,24 @@
         var audioPlayer = document.getElementById("audioPlayer");
         var videoSelector = document.getElementById("videoSelector");
         var isVideoPlaying = false;
-
+    
         // Débogage : Ajouter des messages pour vérifier le chargement de l'API YouTube
         console.log("Chargement de l'API YouTube...");
-
+    
         function onYouTubeIframeAPIReady() {
             console.log("API YouTube prête.");
             var selectedVideoId = videoSelector.value;
             initializeYouTubePlayer(selectedVideoId);
-        }
 
+            // Chargez la nouvelle piste audio
+            audioPlayer.load();
+        }
+    
         function initializeYouTubePlayer(videoId) {
             if (player) {
                 player.destroy();
             }
-
+    
             player = new YT.Player('player', {
                 height: '720',
                 width: '1140',
@@ -91,18 +80,18 @@
                 }
             });
         }
-
+    
         function onPlayerReady(event) {
             // Lorsque le lecteur vidéo YouTube est prêt
-            var playerElement = document.getElementById("player");d
+            var playerElement = document.getElementById("player");
         }
-
+    
         function onPlayerStateChange(event) {
             // Lorsque l'état de la vidéo change (lecture, pause, etc.)
             var state = event.data;
-
+    
             console.log("État de la vidéo :", state);
-
+    
             if (state === YT.PlayerState.PLAYING) {
                 // La vidéo est en cours de lecture, commencez la piste audio si elle est sélectionnée
                 isVideoPlaying = true;
@@ -113,48 +102,95 @@
                 updateAudio();
             }
         }
-
+    
         audioSelector.addEventListener("change", function () {
             // Lorsque la sélection de piste audio change, mettez à jour la piste audio en cours de lecture
-            console.log("Changement de la piste audio...");
+            console.log("Changement de la piste audio:", audioSelector.value);
+
+            // Sauvegardez la langue sélectionnée dans le stockage local
+            localStorage.setItem('audioLang', audioSelector.value);
+
+            var selectedAudioTrack = audioSelector.value;
             updateAudio();
         });
-
+    
         videoSelector.addEventListener("change", function () {
             // Lorsque la sélection de vidéo change, chargez la nouvelle vidéo
             audioPlayer.pause();
-
+    
             console.log("Changement de la vidéo...");
             var selectedVideoId = videoSelector.value;
             initializeYouTubePlayer(selectedVideoId);
         });
+
 
         function updateAudio() {
             var selectedVideoId = videoSelector.value;
 
             if (isVideoPlaying) {
                 var selectedAudioTrack = audioSelector.value;
-                 // Piste en Français
+
+                // Piste en Français
                 if (selectedAudioTrack === "1") {
-                    if (selectedVideoId === "x1j758Oye58") {
+                    if (selectedVideoId === "x1j758Oye58") { // Vidéo Mon Absence
                         audioPlayer.src = "https://drive.google.com/uc?export=download&id=1e2z74oGhEW4JTkKQTwUPL3SrPK8SVcCm";
-                    } else if (selectedVideoId === "Nv5ouwXVRek") {
+                    } else if (selectedVideoId === "Nv5ouwXVRek") { // Vidéo quand j'ouvre un jeu sur mon Ancien Laptop
                         audioPlayer.src = "https://drive.google.com/uc?export=download&id=1sO7v8swNKTnbKgMHoCCi09AXjaLlRbmS";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Vidéo L'histoire de mon Google Home Mini (YTP)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Stop Motion de Noël
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Vidéo suppression de mon ancienne chaîne YouTube
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Vidéo Ouverture d'un Colis
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Bande Annonce Chaîne 1
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Stop Motion - Les amis Épisode 2
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Stop Motion - Les amis Épisode 1
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
                     }
 
-                    audioPlayer.currentTime = player.getCurrentTime();
-                    audioPlayer.play();
-                    player.mute();
+                    // Chargez la nouvelle piste audio
+                    audioPlayer.load();
 
+                    // Ajustez la position de l'audio pour correspondre à la nouvelle position de la vidéo
+                    var videoTime = player.getCurrentTime();
+                    audioPlayer.currentTime = videoTime + 0.55;
+
+                    audioPlayer.pause();
+                    player.unMute();
+                }
                 // Piste en Anglais
-                } else if (selectedAudioTrack === "2") {
-                    if (selectedVideoId === "x1j758Oye58") {
+                else if (selectedAudioTrack === "2") {
+                    if (selectedVideoId === "x1j758Oye58") { // Vidéo Mon Absence
                         audioPlayer.src = "https://drive.google.com/uc?export=download&id=1H6sZ1aqIZ5p74ucoWhZ85Xd5gqnuZ3Lc";
-                    } else if (selectedVideoId === "Nv5ouwXVRek") {
+                    } else if (selectedVideoId === "Nv5ouwXVRek") { // Vidéo quand j'ouvre un jeu sur mon Ancien Laptop
                         audioPlayer.src = "https://drive.google.com/uc?export=download&id=1BWDnYccNXZ0IeUCCfVTfkXgGm-A2YVs5";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Vidéo L'histoire de mon Google Home Mini (YTP)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=1TX2hH8HAw-vpsrJIv2wkoK56HGoW3R-I";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Stop Motion de Noël
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Vidéo suppression de mon ancienne chaîne YouTube
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Vidéo Ouverture d'un Colis
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Bande Annonce Chaîne 1
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Stop Motion - Les amis Épisode 2
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=1AHfA9GmqACToNJ-q89dWymyM7HYQABWP";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Stop Motion - Les amis Épisode 1
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=1XcG_rih8fppcT6rhGptXKaCTodG6fN81";
                     }
 
-                    audioPlayer.currentTime = player.getCurrentTime();
+                    // Chargez la nouvelle piste audio
+                    audioPlayer.load();
+
+                    // Ajustez la position de l'audio pour correspondre à la nouvelle position de la vidéo
+                    var videoTime = player.getCurrentTime();
+                    audioPlayer.currentTime = videoTime + 0.550;
+
                     audioPlayer.play();
                     player.mute();
                 } else {
@@ -165,6 +201,112 @@
                 audioPlayer.pause();
             }
         }
+    
+        document.addEventListener('DOMContentLoaded', function () {
+            // Chargez la langue actuelle à partir du stockage local ou utilisez la langue par défaut
+            var currentLang = localStorage.getItem('siteLang') || 'en';
+            var audioLang = localStorage.getItem('audioLang') || '0'; // 0 corresponds à "Par défaut"
+
+            // Appliquez la langue aux éléments nécessitant une traduction
+            applyTranslations(currentLang);
+
+            // Restaurez la sélection du dropdown de langue
+            document.getElementById('siteLanguageSelector').value = currentLang;
+            document.getElementById('audioSelector').value = audioLang;
+
+            document.getElementById('audioSelector').addEventListener('change', function (event) {
+                var selectedLang = event.target.value;
+                applyAudioTranslations(selectedLang);
+                applyTranslations(selectedLang);  // Ajoutez cette ligne pour mettre à jour toutes les traductions
+                // Sauvegardez la langue sélectionnée dans le stockage local
+                localStorage.setItem('audioLang', selectedLang);
+                console.log('Langue audio sélectionnée:', selectedLang);
+            });
+
+            document.getElementById('videoSelector').addEventListener('change', function (event) {
+                var selectedLang = event.target.value;
+                applyVideoTranslations(selectedLang);
+                applyTranslations(selectedLang);  // Ajoutez cette ligne pour mettre à jour toutes les traductions
+                // Sauvegardez la langue sélectionnée dans le stockage local
+                localStorage.setItem('videoLang', selectedLang);
+                console.log('Langue vidéo sélectionnée:', selectedLang);
+            });
+
+            document.getElementById('siteLanguageSelector').addEventListener('change', function (event) {
+                var selectedLang = event.target.value;
+                applyTranslations(selectedLang);
+                // Sauvegardez la langue sélectionnée dans le stockage local
+                localStorage.setItem('siteLang', selectedLang);
+                console.log('Langue du site sélectionnée:', selectedLang);
+            });
+
+            function applyTranslations(lang) {
+                var translations = {
+                    'audioSelector': {
+                        '0': { 'en': 'Default', 'fr': 'Par défaut', 'es': 'Predeterminado' },
+                        '1': { 'en': 'French', 'fr': 'Français', 'es': 'Francés' },
+                        '2': { 'en': 'English', 'fr': 'Anglais', 'es': 'Inglés' },
+                        '3': { 'en': 'Japanese', 'fr': 'Japonais', 'es': 'Japonés' }
+                    },
+                    'videoSelector': {
+                        "x1j758Oye58": { 'en': 'My absence...', 'fr': 'Mon absence...', 'es': 'Mi ausencia...' },
+                        "Nv5ouwXVRek": { 'en': "When I open a game on my old laptop...", 'fr': "Quand j'ouvre un jeu sur mon ancien laptop...", 'es': "Cuando abro un juego en mi antigua computadora portátil..." },
+                        "W3St6H9JVF0": { 'en': 'The story of my Google Home Mini (YTP)', 'fr': "L'histoire de mon Google Home Mini (YTP)", 'es': 'La historia de mi Google Home Mini (YTP)' },
+                        "ysQ3v-QweOU": { 'en': "Christmas Stop-Motion Video", 'fr': "Vidéo Stop Motion de Noël", 'es': 'Video Stop Motion de Navidad' },
+                        "sivRIKJnDzE": { 'en': "Video deletion of my old YouTube channel", 'fr': "Vidéo suppression de mon ancienne chaîne YouTube", 'es': 'Video eliminación de mi antiguo canal de YouTube' },
+                        "uKqrWDCpKhw": { 'en': "Video Opening a Package", 'fr': "Vidéo Ouverture d'un Colis", 'es': 'Video Apertura de un Paquete' },
+                        "jEHebr1cKvI": { 'en': "Trailer Channel 1", 'fr': "Bande Annonce Chaîne 1", 'es': 'Tráiler Canal 1' },
+                        "kTb_l5TPNcc": { 'en': "Stop Motion - Friends Episode 2 - The Battle of the Mobs", 'fr': "Stop Motion - Les amis Épisode 2 - La Bataille des Mobs", 'es': 'Stop Motion - Amigos Episodio 2 - La Batalla de los Mobs' },
+                        "D5AlqQcNqp4": { 'en': "Stop Motion - Friends Episode 1 - The Zombie Transformation", 'fr': "Stop Motion - Les amis Épisode 1 - Les Zombies de la Transformation", 'es': 'Stop Motion - Amigos Episodio 1 - La Transformación Zombie' },
+                        // Ajoutez d'autres traductions pour les vidéos ici
+                    }
+                };
+
+                Object.keys(translations).forEach(function (elementId) {
+                    var element = document.getElementById(elementId);
+                    if (element) {
+                        Object.keys(translations[elementId]).forEach(function (optionValue) {
+                            var translation = translations[elementId][optionValue][lang];
+                            var option = element.querySelector(`[value="${optionValue}"]`);
+                            if (option) {
+                                option.textContent = translation;  // Utilisez textContent pour mettre à jour le texte visible
+                            }
+                        });
+                    }
+                });
+
+                console.log('Langue du site sélectionnée:', lang);
+            }
+
+            // Appeler la fonction applyTranslations au chargement de la page
+            applyTranslations(currentLang);
+        });
+
+        // Example of how to adjust the video and button size on window resize
+        window.addEventListener('resize', function () {
+            var screenWidth = window.innerWidth;
+
+            // Adjust video size based on screen width
+            if (screenWidth <= 600) {
+                // Small screens
+                document.getElementById('player').style.width = '100%';
+            } else {
+                // Larger screens
+                document.getElementById('player').style.width = '70%';
+            }
+
+            // Adjust button size based on screen width
+            var buttons = document.querySelectorAll('.selector');
+            buttons.forEach(function (button) {
+                if (screenWidth <= 600) {
+                    // Small screens
+                    button.style.width = '100%';
+                } else {
+                    // Larger screens
+                    button.style.width = 'auto';
+                }
+            });
+        });
     </script>
 </body>
 
