@@ -189,7 +189,7 @@
 
                     // Ajustez la position de l'audio pour correspondre à la nouvelle position de la vidéo
                     var videoTime = player.getCurrentTime();
-                    audioPlayer.currentTime = videoTime + 0.550;
+                    audioPlayer.currentTime = videoTime; // ajouter le + 0.550 plus tard
 
                     audioPlayer.play();
                     player.mute();
