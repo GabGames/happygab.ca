@@ -94,14 +94,7 @@
 
         function onPlayerReady(event) {
             // Lorsque le lecteur vidéo YouTube est prêt
-            var playerElement = document.getElementById("player");
-
-            // Activer le mode plein écran
-            playerElement.requestFullscreen = playerElement.requestFullscreen || playerElement.mozRequestFullScreen || playerElement.webkitRequestFullscreen || playerElement.msRequestFullscreen;
-            
-            if (playerElement.requestFullscreen) {
-                playerElement.requestFullscreen();
-            }
+            var playerElement = document.getElementById("player");d
         }
 
         function onPlayerStateChange(event) {
