@@ -1,0 +1,88 @@
+/* Styles communs pour tous les écrans */
+#my-video::-webkit-media-controls-volume-slider,
+#my-video::-webkit-media-controls-mute-button,
+#my-video::-webkit-media-controls-volume-control {
+    display: none;
+}
+
+/* Conteneur principal */
+#player-container {
+    display: flex;
+    flex-wrap: wrap-reverse; /* Permettre le passage à la ligne si nécessaire */
+}
+
+/* Styles spécifiques à la version mobile en mode portrait */
+@media only screen and (max-width: 600px) and (orientation: portrait) {
+    #audioSelector, #videoSelector, #siteLanguageSelector {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    #player {
+        width: 100%; /* Pleine largeur de l'écran */
+    }
+}
+
+/* Styles spécifiques à la version mobile en mode paysage */
+@media only screen and (max-width: 600px) and (orientation: landscape) {
+    #audioSelector, #videoSelector, #siteLanguageSelector {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    #player {
+        width: 100%; /* Pleine largeur de l'écran */
+    }
+}
+
+/* Styles spécifiques aux écrans plus larges en mode portrait */
+@media only screen and (min-width: 601px) and (orientation: portrait) {
+    #player {
+        width: 70%;
+    }
+
+    .selector {
+        width: 33%; /* 33% de la largeur pour chaque bouton (trois boutons côte à côte) */
+        margin-right: 10px;
+        max-width: 200px; /* Ajoutez une largeur maximale pour éviter l'étirement */
+    }
+}
+
+/* Styles spécifiques aux écrans plus larges en mode paysage */
+@media only screen and (min-width: 601px) and (orientation: landscape) {
+    #player {
+        width: 70%;
+    }
+
+    .selector {
+        width: auto;
+        margin-right: 10px;
+    }
+}
+
+/* Styles pour les sélecteurs audio, vidéo et de langue du site */
+.selector {
+    position: relative;
+    bottom: 0px;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Position du sélecteur vidéo spécifique */
+#videoSelector {
+    margin-left: 10px;
+}
+
+#siteLanguageSelector {
+    margin-left: 10px;
+}
+
+/* Position du bouton par défaut */
+#audioSelector {
+    margin-left: 10px;
+    max-width: 100; /* Ajoutez une largeur maximale pour éviter l'étirement */
+    max-height: 50px;
+}
