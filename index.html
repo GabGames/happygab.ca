@@ -23,7 +23,10 @@
 
         <!-- Menu déroulant pour les vidéos -->
         <select id="videoSelector" class="selector" data-lang="videoSelector">
-            <option value="x1j758Oye58"selected>Mon absence…</option>
+            <option value="TRcqli-JYdc"selected>Une Usine de Jouets pas comme les autres | Poppy Playtime (Chapitre 2)</option>
+            <option value="tU8UvAhBQZ8">Subnautica Multijoueur (Ép1)</option>
+            <option value="x1j758Oye58">Mon absence…</option>
+            <option value="QPCFHAKhng4">Une Usine de Jouets pas comme les autres | Poppy Playtime (Chapitre 1)</option>
             <option value="Nv5ouwXVRek">Quand j'ouvre un jeu sur mon ancien laptop...</option>
             <option value="W3St6H9JVF0">L'histoire de mon Google Home Mini (YTP)</option>
             <option value="ysQ3v-QweOU">Vidéo Stop Motion de Noël</option>
@@ -132,8 +135,14 @@
 
                 // Piste en Français
                 if (selectedAudioTrack === "1") {
-                    if (selectedVideoId === "x1j758Oye58") { // Vidéo Mon Absence
+                    if (selectedVideoId === "TRcqli-JYdc") { // Vidéo Poppy Playtime (Chapitre 2)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "tU8UvAhBQZ8") { // Vidéo Subnautica Multijoueur (Ép1)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "x1j758Oye58") { // Vidéo Mon Absence
                         audioPlayer.src = "https://drive.google.com/uc?export=download&id=1e2z74oGhEW4JTkKQTwUPL3SrPK8SVcCm";
+                    } else if (selectedVideoId === "QPCFHAKhng4") { // Vidéo Poppy Playtime (Chapitre 1)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
                     } else if (selectedVideoId === "Nv5ouwXVRek") { // Vidéo quand j'ouvre un jeu sur mon Ancien Laptop
                         audioPlayer.src = "https://drive.google.com/uc?export=download&id=1sO7v8swNKTnbKgMHoCCi09AXjaLlRbmS";
                     } else if (selectedVideoId === "W3St6H9JVF0") { // Vidéo L'histoire de mon Google Home Mini (YTP)
@@ -164,8 +173,14 @@
                 }
                 // Piste en Anglais
                 else if (selectedAudioTrack === "2") {
-                    if (selectedVideoId === "x1j758Oye58") { // Vidéo Mon Absence
+                    if (selectedVideoId === "TRcqli-JYdc") { // Vidéo Poppy Playtime (Chapitre 2)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "tU8UvAhBQZ8") { // Vidéo Subnautica Multijoueur (Ép1)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "x1j758Oye58") { // Vidéo Mon Absence
                         audioPlayer.src = "https://drive.google.com/uc?export=download&id=1H6sZ1aqIZ5p74ucoWhZ85Xd5gqnuZ3Lc";
+                    } else if (selectedVideoId === "QPCFHAKhng4") { // Vidéo Poppy Playtime (Chapitre 1)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
                     } else if (selectedVideoId === "Nv5ouwXVRek") { // Vidéo quand j'ouvre un jeu sur mon Ancien Laptop
                         audioPlayer.src = "https://drive.google.com/uc?export=download&id=1BWDnYccNXZ0IeUCCfVTfkXgGm-A2YVs5";
                     } else if (selectedVideoId === "W3St6H9JVF0") { // Vidéo L'histoire de mon Google Home Mini (YTP)
@@ -249,7 +264,10 @@
                         '3': { 'en': 'Japanese', 'fr': 'Japonais', 'es': 'Japonés' }
                     },
                     'videoSelector': {
+                        "TRcqli-JYdc": { 'en': "A toy factory like no other | Poppy Playtime (Chapter 2)", 'fr': "Une Usine de Jouets pas comme les autres | Poppy Playtime (Chapitre 2)", 'es': "" },
+                        "tU8UvAhBQZ8": { 'en': "Subnautica Multiplayer (Ep1)", 'fr': "Subnautica Multijoueur (Ép1)", 'es': "" },
                         "x1j758Oye58": { 'en': 'My absence...', 'fr': 'Mon absence...', 'es': 'Mi ausencia...' },
+                        "QPCFHAKhng4": { 'en': 'A toy factory like no other | Poppy Playtime (Chapter 1)', 'fr': "Une Usine de Jouets pas comme les autres | Poppy Playtime (Chapitre 1)", 'es': "" },
                         "Nv5ouwXVRek": { 'en': "When I open a game on my old laptop...", 'fr': "Quand j'ouvre un jeu sur mon ancien laptop...", 'es': "Cuando abro un juego en mi antigua computadora portátil..." },
                         "W3St6H9JVF0": { 'en': 'The story of my Google Home Mini (YTP)', 'fr': "L'histoire de mon Google Home Mini (YTP)", 'es': 'La historia de mi Google Home Mini (YTP)' },
                         "ysQ3v-QweOU": { 'en': "Christmas Stop-Motion Video", 'fr': "Vidéo Stop Motion de Noël", 'es': 'Video Stop Motion de Navidad' },
