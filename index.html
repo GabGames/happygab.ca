@@ -1,57 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Exemple de dropdown des vidéos</title>
+  <title>Exemple de chargement de l'API YouTube Data</title>
+  <!-- Charger le fichier JS pour le client GAPI -->
   <script src="https://apis.google.com/js/api.js"></script>
   <script>
+    // Définir la clé API
     var apiKey = "${{ secrets.API }}";
-    // Charger l'API YouTube Data
-    function loadClient() {
+    // Charger le client GAPI de manière asynchrone
+    gapi.load("client", function() {
+      // Initialiser le client GAPI avec la clé API
       gapi.client.setApiKey(apiKey);
-      return gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
-          .then(function() { console.log("GAPI client loaded for API"); },
-                function(err) { console.error("Error loading GAPI client for API", err); });
-    }
-    // Obtenir les vidéos de la chaîne
-    function getVideos() {
-      return gapi.client.youtube.search.list({
-        "part": "snippet",
-        "channelId": "UCtOE-8lzaKM5yKpaZFvgWaw", // ID de la chaîne Happy Gab
-        "maxResults": 10, // Nombre de vidéos à afficher
-        "order": "date" // Trier par date de publication
-      })
-          .then(function(response) {
-                  // Afficher le résultat dans la console
-                  console.log("Response", response);
-                  // Créer le dropdown des vidéos
-                  createDropdown(response.result.items);
-                },
-                function(err) { console.error("Execute error", err); });
-    }
-    // Créer le dropdown des vidéos
-    function createDropdown(videos) {
-      // Sélectionner l'élément select
-      var select = document.getElementById("videos");
-      // Parcourir les vidéos
-      for (var i = 0; i < videos.length; i++) {
-        // Créer un élément option
-        var option = document.createElement("option");
-        // Définir la valeur et le texte de l'option
-        option.value = videos[i].id.videoId; // ID de la vidéo
-        option.text = videos[i].snippet.title; // Titre de la vidéo
-        // Ajouter l'option au select
-        select.appendChild(option);
-      }
-    }
-    // Charger l'API YouTube Data au chargement de la page
-    gapi.load("client", loadClient);
+      // Charger l'API YouTube Data
+      gapi.client.load("youtube", "v3", function() {
+        // Le client GAPI et l'API YouTube Data sont prêts à être utilisés
+        console.log("GAPI client and YouTube Data API loaded");
+      });
+    });
   </script>
 </head>
 <body>
-  <h1>Exemple de dropdown des vidéos</h1>
-  <p>Sélectionnez une vidéo de la chaîne :</p>
-  <select id="videos">
-    <option value="">Aucune vidéo sélectionnée</option>
-  </select>
+  <h1>Exemple de chargement de l'API YouTube Data</h1>
+  <p>Ce code HTML charge le client GAPI et l'API YouTube Data de manière correcte.</p>
 </body>
 </html>
