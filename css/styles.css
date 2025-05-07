@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 *,:after,:before {
     box-sizing: border-box;
@@ -15,7 +15,7 @@
     -moz-tab-size: 4;
     -o-tab-size: 4;
     tab-size: 4;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Comic Relief', sans-serif;
     font-feature-settings: normal;
     font-variation-settings: normal;
     -webkit-tap-highlight-color: transparent
@@ -28,7 +28,7 @@
 body {
     margin: 0;
     line-height: inherit;
-    background-color: #121212;
+    background-color: #ff0000;
 }
 
 hr {
@@ -57,7 +57,7 @@ b,strong {
 }
 
 code,kbd,pre,samp {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Comic Relief', sans-serif;
     font-feature-settings: normal;
     font-variation-settings: normal;
     font-size: 1em
@@ -967,11 +967,11 @@ img,video {
 }
 
 .font-display {
-    font-family: 'Montserrat', sans-serif
+    font-family: 'Comic Relief', sans-serif
 }
 
 .font-title {
-    font-family: 'Montserrat', sans-serif
+    font-family: 'Comic Relief', sans-serif
 }
 
 .text-3xl {
