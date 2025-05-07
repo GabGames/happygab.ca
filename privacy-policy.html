@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Gab</title>
+    <title>Privacy Policy</title>
     <meta name="theme-color" content="#121212"/>
     <meta name="description" content="HappyGab ...."/>
     <meta property="og:title" content="HappyGab"/>
@@ -28,6 +28,7 @@
                 <div class="mt-8 flex items-center justify-center space-x-4">
                     <a id="privacy-link" class="text-xs text-[#C7C7C7] transition-all hover:opacity-75" href="privacy-policy"></a>
                     <a id="legal-link" class="text-xs text-[#C7C7C7] transition-all hover:opacity-75" href="notice"></a>
+                    <a id="test" class="text-xs text-[#C7C7C7] transition-all hover:opacity-75" href="notice"></a>
                 </div>
                     <div class="mt-8 flex items-center justify-center space-x-4">
                         <a class="transition-all hover:opacity-75" href="https://youtube.com/@HappyGab" target="_blank" rel="noopener noreferrer">
@@ -81,13 +82,15 @@
                 title: "On se voit bientôt.",
                 desc: "Nous construisons actuellement notre plateforme pour mieux vous servir. Merci pour votre compréhension et votre patience. Le site sera disponible prochainement.",
                 privacy: "Politique de confidentialité",
-                legal: "Mentions légales"
+                legal: "Mentions légales",
+                test: "Test"
             },
             en: {
                 title: "Coming Soon.",
                 desc: "We are currently building our platform to serve you better. Thank you for your understanding and patience. The website will be available soon.",
                 privacy: "Privacy Policy",
-                legal: "Legal Notice"
+                legal: "Legal Notice",
+                test: "Test"
             }
         };
 
@@ -97,6 +100,7 @@
         document.getElementById("main-desc").textContent = t.desc;
         document.getElementById("privacy-link").textContent = t.privacy;
         document.getElementById("legal-link").textContent = t.legal;
+        document.getElementById("test").textContent = t.test;
 
         document.documentElement.lang = lang;
     </script>
