@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+    <div id="player-container" style="position: relative;">
+        <!-- Balise audio pour la piste audio -->
+        <audio id="audioPlayer" controls style="display: none;"></audio>
+
+        <div text="" id="textAudioSelector" class="Text" data-lang="textAudioSelector">Piste Audio
+
+            <!-- Menu déroulant pour les pistes audio -->
+            <select id="audioSelector" class="selector" data-lang="audioSelector">
+                <option value="0">Par défaut</option>
+                <option value="1">Français</option>
+                <option value="2">English</option>
+                <option value="3">Japonais</option>
+            </select>
+
+        </div>
+
+        <div text="" id="textAudioSelector" class="Text" data-lang="textAudioSelector">Vidéo
+
+            <!-- Menu déroulant pour les vidéos -->
+            <select id="videoSelector" class="selector" data-lang="videoSelector">
+                <option value="TRcqli-JYdc"selected>Une Usine de Jouets pas comme les autres | Poppy Playtime (Chapitre 2) (Partie 2)</option>
+                <option value="TRcqli-JYdc"selected>Une Usine de Jouets pas comme les autres | Poppy Playtime (Chapitre 2)</option>
+                <option value="tU8UvAhBQZ8">Subnautica Multijoueur (Ép1)</option>
+                <option value="x1j758Oye58">Mon absence…</option>
+                <option value="QPCFHAKhng4">Une Usine de Jouets pas comme les autres | Poppy Playtime (Chapitre 1)</option>
+                <option value="Nv5ouwXVRek">Quand j'ouvre un jeu sur mon ancien laptop...</option>
+                <option value="W3St6H9JVF0">L'histoire de mon Google Home Mini (YTP)</option>
+                <option value="ysQ3v-QweOU">Vidéo Stop Motion de Noël</option>
+                <option value="sivRIKJnDzE">Vidéo supression de mon ancienne chaîne YouTube</option>
+                <option value="uKqrWDCpKhw">Vidéo Ouverture d'un Colis</option>
+                <option value="jEHebr1cKvI">Bande Annonce Chaîne 1</option>
+                <option value="kTb_l5TPNcc">Stop Motion - Les amis Épisode 2 - La Bataille des Mobs</option>
+                <option value="D5AlqQcNqp4">Stop Motion - Les amis Épisode 1 - Les Zombies de la Transformation</option>
+                <!-- Ajoutez d'autres options pour différentes vidéos -->
+            </select>
+        </div>
+
+        <div text="" id="textSiteLanguageSelector" class="Text" data-lang="textSiteLanguageSelector">Langue du Site
+            <!-- Menu déroulant pour la langue du site -->
+            <select id="siteLanguageSelector" class="selector">
+                <option value="en" label="English" selected>English</option>
+                <option value="fr" label="Français">Français</option>
+                <option value="es" label="Espagnol" selected>Espagnol</option>
+                <!-- Ajoutez d'autres options pour différentes langues -->
+            </select>
+        </div>
+
+        <div id="player"></div>
+    </div>
+
+    <script>
+        var player;
+        var audioSelector = document.getElementById("audioSelector");
+        var audioPlayer = document.getElementById("audioPlayer");
+        var videoSelector = document.getElementById("videoSelector");
+        var isVideoPlaying = false;
+    
+        // Débogage : Ajouter des messages pour vérifier le chargement de l'API YouTube
+        console.log("Chargement de l'API YouTube...");
+    
+        function onYouTubeIframeAPIReady() {
+            console.log("API YouTube prête.");
+            var selectedVideoId = videoSelector.value;
+            initializeYouTubePlayer(selectedVideoId);
+
+
+            audioPlayer.hasStartedPlaying = false; // Initialisez la propriété hasStartedPlaying
+        }
+    
+        function initializeYouTubePlayer(videoId) {
+            if (player) {
+                player.destroy();
+            }
+    
+            player = new YT.Player('player', {
+                height: '720',
+                width: '1140',
+                videoId: videoId,
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+    
+        function onPlayerReady(event) {
+            // Lorsque le lecteur vidéo YouTube est prêt
+            var playerElement = document.getElementById("player");
+        }
+    
+        function onPlayerStateChange(event) {
+            // Lorsque l'état de la vidéo change (lecture, pause, etc.)
+            var state = event.data;
+    
+            console.log("État de la vidéo :", state);
+    
+            if (state === YT.PlayerState.PLAYING) {
+                // La vidéo est en cours de lecture, commencez la piste audio si elle est sélectionnée
+                isVideoPlaying = true;
+                updateAudio();
+            } else if (state === YT.PlayerState.PAUSED || state === YT.PlayerState.ENDED) {
+                // La vidéo est en pause ou terminée, mettez en pause la piste audio
+                isVideoPlaying = false;
+                updateAudio();
+            }
+        }
+    
+        audioSelector.addEventListener("change", function () {
+            // Lorsque la sélection de piste audio change, mettez à jour la piste audio en cours de lecture
+            console.log("Changement de la piste audio:", audioSelector.value);
+
+            // Sauvegardez la langue sélectionnée dans le stockage local
+            localStorage.setItem('audioLang', audioSelector.value);
+
+            var selectedAudioTrack = audioSelector.value;
+            updateAudio();
+        });
+    
+        videoSelector.addEventListener("change", function () {
+            // Lorsque la sélection de vidéo change, chargez la nouvelle vidéo
+            audioPlayer.pause();
+    
+            console.log("Changement de la vidéo...");
+            var selectedVideoId = videoSelector.value;
+            initializeYouTubePlayer(selectedVideoId);
+        });
+
+
+        function updateAudio() {
+            var selectedVideoId = videoSelector.value;
+
+            if (isVideoPlaying) {
+                var selectedAudioTrack = audioSelector.value;
+
+                // Piste en Français
+                if (selectedAudioTrack === "1") {
+                    if (selectedVideoId === "TRcqli-JYdc") { // Vidéo Poppy Playtime (Chapitre 2)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "tU8UvAhBQZ8") { // Vidéo Subnautica Multijoueur (Ép1)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "x1j758Oye58") { // Vidéo Mon Absence
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=1e2z74oGhEW4JTkKQTwUPL3SrPK8SVcCm";
+                    } else if (selectedVideoId === "QPCFHAKhng4") { // Vidéo Poppy Playtime (Chapitre 1)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "Nv5ouwXVRek") { // Vidéo quand j'ouvre un jeu sur mon Ancien Laptop
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=1sO7v8swNKTnbKgMHoCCi09AXjaLlRbmS";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Vidéo L'histoire de mon Google Home Mini (YTP)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "ysQ3v-QweOU") { // Stop Motion de Noël
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "sivRIKJnDzE") { // Vidéo suppression de mon ancienne chaîne YouTube
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "uKqrWDCpKhw") { // Vidéo Ouverture d'un Colis
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "jEHebr1cKvI") { // Bande Annonce Chaîne 1
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "kTb_l5TPNcc") { // Stop Motion - Les amis Épisode 2
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "D5AlqQcNqp4") { // Stop Motion - Les amis Épisode 1
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    }
+
+                    // Chargez la nouvelle piste audio
+                    audioPlayer.load();
+
+                    // Ajustez la position de l'audio pour correspondre à la nouvelle position de la vidéo
+                    var videoTime = player.getCurrentTime();
+                    audioPlayer.currentTime = videoTime + 0.55;
+
+                    audioPlayer.pause();
+                    player.unMute();
+                }
+                // Piste en Anglais
+                else if (selectedAudioTrack === "2") {
+                    if (selectedVideoId === "TRcqli-JYdc") { // Vidéo Poppy Playtime (Chapitre 2)
+                        audioPlayer.src = "https://dl.dropboxusercontent.com/scl/fi/j95ojsbt7mo5xw20l6hw7/Doublage-EN-Audio-p1-Vid-o-Poppy-Playtime-Chapitre-2-V1.mp3?rlkey=uy78zd18eeyxa62pmvt8cnv5g&dl=0?raw=1";
+                    } else if (selectedVideoId === "tU8UvAhBQZ8") { // Vidéo Subnautica Multijoueur (Ép1)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "x1j758Oye58") { // Vidéo Mon Absence
+                        audioPlayer.src = "https://dl.dropboxusercontent.com/scl/fi/yz88qecy8vtuqvum2y19n/AudioEN.mp3?rlkey=rtj6808886sna1weroyf4qwhk&dl=0?raw=1";
+                    } else if (selectedVideoId === "QPCFHAKhng4") { // Vidéo Poppy Playtime (Chapitre 1)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=";
+                    } else if (selectedVideoId === "Nv5ouwXVRek") { // Vidéo quand j'ouvre un jeu sur mon Ancien Laptop
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=1BWDnYccNXZ0IeUCCfVTfkXgGm-A2YVs5";
+                    } else if (selectedVideoId === "W3St6H9JVF0") { // Vidéo L'histoire de mon Google Home Mini (YTP)
+                        audioPlayer.src = "https://drive.google.com/uc?export=download&id=1TX2hH8HAw-vpsrJIv2wkoK56HGoW3R-I";
+                    } else if (selectedVideoId === "ysQ3v-QweOU") { // Stop Motion de Noël
+                        audioPlayer.src = "https://dl.dropboxusercontent.com'VotreLienCompletSansLeHttps'?raw=1";
+                    } else if (selectedVideoId === "sivRIKJnDzE") { // Vidéo suppression de mon ancienne chaîne YouTube
+                        audioPlayer.src = "https://dl.dropboxusercontent.com'VotreLienCompletSansLeHttps'?raw=1";
+                    } else if (selectedVideoId === "uKqrWDCpKhw") { // Vidéo Ouverture d'un Colis
+                        audioPlayer.src = "https://dl.dropboxusercontent.com'VotreLienCompletSansLeHttps'?raw=1";
+                    } else if (selectedVideoId === "jEHebr1cKvI") { // Bande Annonce Chaîne 1
+                        audioPlayer.src = "https://dl.dropboxusercontent.com'VotreLienCompletSansLeHttps'?raw=1";
+                    } else if (selectedVideoId === "kTb_l5TPNcc") { // Stop Motion - Les amis Épisode 2
+                        audioPlayer.src = "https://dl.dropboxusercontent.com/scl/fi/eiqra3hff531ssg9h11u8/EN-Friends-episode-2-Battle-of-the-Mobs.mp3?rlkey=uq3pmsnix8d645f0l7xy69dvf&dl=0?raw=1";
+                    } else if (selectedVideoId === "D5AlqQcNqp4") { // Stop Motion - Les amis Épisode 1
+                        audioPlayer.src = "https://dl.dropboxusercontent.com/scl/fi/qeq7f86myl4lgk89f0lhv/EN-Friends-episode-1-The-transformation-zombies.mp3?rlkey=wfb7frep8uhwgp813694lou74&dl=0?raw=1";
+                    }
+
+                    audioPlayer.play();
+                    // Chargez la nouvelle piste audio
+                    audioPlayer.load();
+
+                    // Ajustez la position de l'audio pour correspondre à la nouvelle position de la vidéo
+                    var videoTime = player.getCurrentTime();
+                    
+                    audioPlayer.currentTime = videoTime
+
+                    audioPlayer.play();
+                    player.mute();
+                } else {
+                    audioPlayer.src = "";
+                    player.unMute();
+                }
+            } else {
+                audioPlayer.pause();
+            }
+        }
+    
+        document.addEventListener('DOMContentLoaded', function () {
+            // Chargez la langue actuelle à partir du stockage local ou utilisez la langue par défaut
+            var currentLang = localStorage.getItem('siteLang') || 'en';
+            var audioLang = localStorage.getItem('audioLang') || '0'; // 0 corresponds à "Par défaut"
+
+            // Appliquez la langue aux éléments nécessitant une traduction
+            applyTranslations(currentLang);
+
+            // Restaurez la sélection du dropdown de langue
+            document.getElementById('siteLanguageSelector').value = currentLang;
+            document.getElementById('audioSelector').value = audioLang;
+
+            document.getElementById('audioSelector').addEventListener('change', function (event) {
+                var selectedLang = event.target.value;
+                applyAudioTranslations(selectedLang);
+                applyTranslations(selectedLang);  // Ajoutez cette ligne pour mettre à jour toutes les traductions
+                // Sauvegardez la langue sélectionnée dans le stockage local
+                localStorage.setItem('audioLang', selectedLang);
+                console.log('Langue audio sélectionnée:', selectedLang);
+            });
+
+            document.getElementById('videoSelector').addEventListener('change', function (event) {
+                var selectedLang = event.target.value;
+                applyVideoTranslations(selectedLang);
+                applyTranslations(selectedLang);  // Ajoutez cette ligne pour mettre à jour toutes les traductions
+                // Sauvegardez la langue sélectionnée dans le stockage local
+                localStorage.setItem('videoLang', selectedLang);
+                console.log('Langue vidéo sélectionnée:', selectedLang);
+            });
+
+            document.getElementById('siteLanguageSelector').addEventListener('change', function (event) {
+                var selectedLang = event.target.value;
+                applyTranslations(selectedLang);
+                // Sauvegardez la langue sélectionnée dans le stockage local
+                localStorage.setItem('siteLang', selectedLang);
+                console.log('Langue du site sélectionnée:', selectedLang);
+            });
+
+            function applyTranslations(lang) {
+                var translations = {
+                    'textAudioSelector': {
+                        'en': 'Audio Track', // Texte par défaut en anglais
+                        'fr': 'Piste Audio',
+                        'es': 'Pista de Audio'
+                    },
+                    'audioSelector': {
+                        '0': { 'en': 'Default', 'fr': 'Par défaut', 'es': 'Predeterminado' },
+                        '1': { 'en': 'French', 'fr': 'Français', 'es': 'Francés' },
+                        '2': { 'en': 'English', 'fr': 'Anglais', 'es': 'Inglés' },
+                        '3': { 'en': 'Japanese', 'fr': 'Japonais', 'es': 'Japonés' }
+                    },
+                    'videoSelector': {
+                        "6Ov4tDVUyXc": { 'en': "Minecraft Survival with MelonDoom (Ep.2)", 'fr': "Je fais une Survie Minecraft Avec MelonDoom (Ép.2)", 'es': "" },
+                        "rx1ystmyH-8": { 'en': "Minecraft Survival with MelonDoom (Ep.1)", 'fr': "Je fais une Survie Minecraft Avec MelonDoom (Ép.1)", 'es': "" },
+                        "pliWVG9UkVE": { 'en': "Special Unboxing...", 'fr': "Unboxing Spécial...", 'es': "" },
+                        "5fTpxgIDWfU": { 'en': "My First Video on Fortnite (with Kylix)", 'fr': "Ma Première Vidéo sur Fortnite (avec Kylix)", 'es': "" },
+                        "OWJlcVVEumM": { 'en': "A toy factory like no other | Poppy Playtime Chapter 2 (Part 2)", 'fr': "Une Usine de Jouets pas comme les autres | Poppy Playtime Chapitre 2 (Partie 2)", 'es': "" },
+                        "TRcqli-JYdc": { 'en': "A toy factory like no other | Poppy Playtime (Chapter 2)", 'fr': "Une Usine de Jouets pas comme les autres | Poppy Playtime (Chapitre 2)", 'es': "" },
+                        "tU8UvAhBQZ8": { 'en': "Subnautica Multiplayer (Ep1)", 'fr': "Subnautica Multijoueur (Ép1)", 'es': "" },
+                        "x1j758Oye58": { 'en': 'My absence...', 'fr': 'Mon absence...', 'es': 'Mi ausencia...' },
+                        "QPCFHAKhng4": { 'en': 'A toy factory like no other | Poppy Playtime (Chapter 1)', 'fr': "Une Usine de Jouets pas comme les autres | Poppy Playtime (Chapitre 1)", 'es': "" },
+                        "Nv5ouwXVRek": { 'en': "When I open a game on my old laptop...", 'fr': "Quand j'ouvre un jeu sur mon ancien laptop...", 'es': "Cuando abro un juego en mi antigua computadora portátil..." },
+                        "W3St6H9JVF0": { 'en': 'The story of my Google Home Mini (YTP)', 'fr': "L'histoire de mon Google Home Mini (YTP)", 'es': 'La historia de mi Google Home Mini (YTP)' },
+                        "ysQ3v-QweOU": { 'en': "Christmas Stop-Motion Video", 'fr': "Vidéo Stop Motion de Noël", 'es': 'Video Stop Motion de Navidad' },
+                        "sivRIKJnDzE": { 'en': "Video of the loss of my old YouTube channel", 'fr': "Vidéo suppression de mon ancienne chaîne YouTube", 'es': 'Video eliminación de mi antiguo canal de YouTube' },
+                        "uKqrWDCpKhw": { 'en': "Video Opening a Package", 'fr': "Vidéo Ouverture d'un Colis", 'es': 'Video Apertura de un Paquete' },
+                        "jEHebr1cKvI": { 'en': "Channel Trailer 1", 'fr': "Bande Annonce Chaîne 1", 'es': 'Tráiler Canal 1' },
+                        "kTb_l5TPNcc": { 'en': "Stop Motion - Friends Episode 2 - The Battle of the Mobs", 'fr': "Stop Motion - Les amis Épisode 2 - La Bataille des Mobs", 'es': 'Stop Motion - Amigos Episodio 2 - La Batalla de los Mobs' },
+                        "D5AlqQcNqp4": { 'en': "Stop Motion - Friends Episode 1 - The Zombie Transformation", 'fr': "Stop Motion - Les amis Épisode 1 - Les Zombies de la Transformation", 'es': 'Stop Motion - Amigos Episodio 1 - La Transformación Zombie' },
+                        // Ajoutez d'autres traductions pour les vidéos ici
+                    }
+                };
+
+                Object.keys(translations).forEach(function (elementId) {
+                    var element = document.getElementById(elementId);
+                    if (element) {
+                        Object.keys(translations[elementId]).forEach(function (optionValue) {
+                            var translation = translations[elementId][optionValue][lang];
+                            var option = element.querySelector(`[value="${optionValue}"]`);
+                            if (option) {
+                                option.textContent = translation;  // Utilisez textContent pour mettre à jour le texte visible
+                            }
+                        });
+                    }
+                });
+
+                console.log('Langue du site sélectionnée:', lang);
+            }
+
+            // Appeler la fonction applyTranslations au chargement de la page
+            applyTranslations(currentLang);
+        });
+
+        // Example of how to adjust the video and button size on window resize
+        window.addEventListener('resize', function () {
+            var screenWidth = window.innerWidth;
+
+            // Adjust video size based on screen width
+            if (screenWidth <= 600) {
+                // Small screens
+                document.getElementById('player').style.width = '100%';
+            } else {
+                // Larger screens
+                document.getElementById('player').style.width = '70%';
+            }
+
+            // Adjust button size based on screen width
+            var buttons = document.querySelectorAll('.selector');
+            buttons.forEach(function (button) {
+                if (screenWidth <= 600) {
+                    // Small screens
+                    button.style.width = '100%';
+                } else {
+                    // Larger screens
+                    button.style.width = 'auto';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
