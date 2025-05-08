@@ -1,4 +1,4 @@
-# [Multilingual udio Player](https://gabgames.github.io/)
+# [Previously a Multilingual Audio Player](https://gabgames.github.io/)
 I created an HTML code that uses my Youtube videos to add my multilingual audio tracks because unfortunately I don't have YouTube functionality.
 
 > **Note**:
