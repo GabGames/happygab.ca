@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy</title>
+    <meta name="theme-color" content="#121212"/>
+    <meta name="description" content="HappyGab ...."/>
+    <meta property="og:title" content="HappyGab"/>
+    <meta property="og:description" content="HappyGab ...."/>
+    <meta name="application-name" content="HappyGab"/>
+    <meta property="og:site_name" content="HappyGab"/>
+    <meta property="og:image" content="/content/logo.png"/>
+    <link rel="icon" href="/content/favicon.ico">
+    <link rel="preload" href="/css/styles.css" as="style"/>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div>
+        <div class="mx-10 flex h-screen items-center justify-center md:mx-0">
+            <div class="text-center">
+                <img alt="HappyGab" width="55" height="55" class="mx-auto block" src="content/logo.png" stroke-linecap="round" stroke-linejoin="round"/>
+
+                <h1 id="main-title" class="mt-8 font-title text-base font-medium text-white lg:text-lg"></h1>
+                <p id="main-desc" class="mx-auto mt-2 text-pretty text-sm text-[#92989C] md:max-w-[80%] lg:max-w-[60%]"></p>
+
+                <div class="mt-8 flex items-center justify-center space-x-4">
+                    <a id="privacy-link" class="text-xs text-[#C7C7C7] transition-all hover:opacity-75" href="index.html"></a>
+                    <a id="test" class="text-xs text-[#C7C7C7] transition-all hover:opacity-75" href="notice"></a>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        const params = new URLSearchParams(window.location.search);
+        let lang = params.get("lang");
+
+        if (!lang) {
+            const browserLang = navigator.language || navigator.userLanguage;
+            lang = browserLang.startsWith("en") ? "en" : "fr";
+        }
+
+        const translations = {
+            fr: {
+                title: "Politique de confidentialité",
+                //desc: "Salut, c'est Happy Gab ! 👋 Je travaille dur pour vous créer un site incroyable autour de ma chaîne YouTube. Encore un peu de patience... Ça va être épique ! 🚀 Merci pour votre soutien ❤️",
+                home: "Home",
+            },
+            en: {
+                title: "Privacy Policy",
+                //desc: "Hey, it's Happy Gab here! 👋 I'm working hard to bring you an awesome website around my YouTube channel. Just a little more patience... it's going to be epic! 🚀 Thanks for your support ❤️",
+                home: "Home",
+            }
+        };
+
+        const t = translations[lang] || translations.fr;
+
+        document.getElementById("main-title").textContent = t.title;
+        document.getElementById("main-desc").textContent = t.desc;
+        document.getElementById("privacy-link").textContent = t.home;
+        document.getElementById("test").textContent = t.test;
+
+        document.documentElement.lang = lang;
+    </script>
+</body>
+</html>
