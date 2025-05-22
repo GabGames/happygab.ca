@@ -19,7 +19,7 @@ fetch(" https://api.freeapi.app/api/v1/public/youtube/videos")
             // console.log(video_title);
             // console.log(thumbnail);
             // console.log(video_views); 
-            // console.log(channel_title);
+            console.log(channel_title);
             // console.log(video_tags);
 
             const video_a = document.createElement("a");
