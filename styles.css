@@ -945,6 +945,11 @@ img,video {
     background-color: #29292B
 }
 
+.bg-\[\#ff0000\] {
+    --tw-bg-opacity: 1;
+    background-color: #ff0000
+}
+
 .py-16 {
     padding-top: 1rem;
     padding-bottom: 1rem
@@ -1066,6 +1071,11 @@ img,video {
 .text-white {
     --tw-text-opacity: 1;
     color: rgb(255 255 255/var(--tw-text-opacity))
+}
+
+.text-red {
+    --tw-text-opacity: 1;
+    color: #ff0000
 }
 
 .underline {
